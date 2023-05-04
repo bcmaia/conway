@@ -1,0 +1,95 @@
+# Ignore unnecessary files and directories for different programming languages
+
+# Rust ignores
+target/     # Ignore target directory
+Cargo.lock
+
+# C ignores
+*.out
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+build/      # Ignore build directory
+
+# C++ ignores
+*.exe
+*.out
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+build/      # Ignore build directory
+
+# Zig ignores
+zig-cache/  # Ignore Zig cache directory
+
+# Haskell ignores
+dist/       # Ignore dist directory
+cabal/      # Ignore cabal sandbox directory
+.stack-work/
+
+# Java ignores
+bin/        # Ignore compiled binaries directory
+build/      # Ignore build directory
+target/     # Ignore target directory
+
+# V ignores
+build/      # Ignore build directory
+
+# Go ignores
+*.exe
+*.test
+*.prof
+*.out
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_export.*
+_cgo_gotypes.*
+_cgo_flags
+*.a
+*.so
+*.dll
+*.dylib
+vendor/     # Ignore vendor directory
+bin/        # Ignore compiled binaries directory
+pkg/        # Ignore package cache directory
+
+# JavaScript/TypeScript ignores
+node_modules/
+dist/
+build/
+*.log
+
+# Dart ignores
+build/      # Ignore build directory
+.dart_tool/
+.packages
+.pub-cache/
+*.dart.js
+*.js
+*.js.map
+
+# Project directory structure:
+#
+# project_root/
+# ├── c/
+# │   ├── implementation1/
+# │   ├── implementation2/
+# │   └── ...
+# ├── cpp/
+# │   ├── implementation1/
+# │   ├── implementation2/
+# │   └── ...
+# ├── zig/
+# │   ├── implementation1/
+# │   ├── implementation2/
+# │   └── ...
+# etc
+#
+# Each implementation directory contains the necessary files for each language implementation.
