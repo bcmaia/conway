@@ -1,79 +1,85 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <termios.h>
-#include <unistd.h>
+#include <stdint.h>
+#include <stdbool.h>
 
-// Function to set terminal attributes to raw mode
-void set_raw_mode(struct termios *original_termios) {
-    struct termios raw;
-    tcgetattr(STDIN_FILENO, original_termios);
-    raw = *original_termios;
-    raw.c_lflag &= ~(ECHO | ICANON);
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
+#include <time.h>
 
-// Function to restore original terminal attributes
-void restore_terminal(struct termios *original_termios) {
-    tcsetattr(STDIN_FILENO, TCSAFLUSH, original_termios);
-}
 
-typedef struct {
-	char* matrix;
-	size_t height, width;
-} board;
+#include "utils.h"
+#include "board.h"
 
-#define SUCCESS (0)
-#define FAILURE (8)
 
-int board_init (board* b, int height, int width) {
-	b->height = (size_t)height;
-	b->width = (size_t)width;
-	b->matrix = (char*)calloc(sizeof(char), b->height * b->width);
-	if (!b->matrix) return FAILURE;
-	return SUCCESS;
-} 
+// const uint32_t CHUNK_SIZE = 4;
 
-void board_del (board* b) {
-	free(b->matrix);
-}
+// typedef struct {
+//     board_t* b;
+//     uint32_t x;
+//     uint32_t y;
+// } thread_data_t;
 
-void board_set(size_t height, size_t width, char val) {
-	b->
-}
+// void* runner (void* arg) {
+//     thread_data_t* data = (thread_data_t*)arg;
 
-int main() {
-    struct termios original_termios;
+//     if (
+//         (data->x >= data->b->width) 
+//         || (data->y >= data->b->height)
+//     ) return NULL;
+    
+//     uint32_t sum = 0;
 
-    // Save current terminal state
-    set_raw_mode(&original_termios);
+//     for  
+// }
 
-    // Clear the terminal
-    system("clear");
 
-    char ch;
-    int x, y;
+int main(int argc, char* argv[]) {
+    srand(time(NULL));
 
-    // Ask the user to input a character
-    printf("Enter a character: ");
-    ch = getchar();
+    int flag = 1;
+    uint32_t width = 30;
+    uint32_t height = 30;
+    
+    switch (argc)
+    {
+        case 1: break;
+        case 2:
+            flag = sscanf(argv[0], " %u", &width);
+            break;
+        case 3:
+            flag = sscanf(argv[0], " %u %u", &width, &height);
+            break;
+        default:
+            printf("[ERROR] Too many parameters!\n");
+            return EXIT_FAILURE;
+    }
 
-    // Ask the user for coordinates
-    printf("Enter X coordinate: ");
-    scanf("%d", &x);
-    printf("Enter Y coordinate: ");
-    scanf("%d", &y);
+    if (0 >= flag) {
+        printf("[ERROR] Failed to read parameters.\n");
+        return EXIT_FAILURE;
+    }
 
-    // Write the character at the given coordinates
-    printf("\033[%d;%dH%c", y, x, ch);
+    //uint64_t max = MAX(width, height);
 
-    // Ask the user to type any key to finish the program
-    printf("\nPress any key to finish the program.");
-    getchar(); // Consume the newline character from the previous input
-    getchar(); // Wait for user input
+    board_t board;
+    flag = board_init(&board, width, height);
 
-    // Close and restore the terminal to its previous state
-    restore_terminal(&original_termios);
+    if (flag) {
+        printf("[ERROR] Failed to initialize board.\n");
+        return EXIT_FAILURE;
+    }
 
-    return 0;
+    bool active = true;
+
+    while (active) {
+        printf("a\n");
+        board_tick(&board);
+        printf("b\n");
+        board_print(&board);
+        usleep(250 * 1000);
+    }
+
+    board_del(&board);
+
+    return EXIT_SUCCESS;
 }
 
