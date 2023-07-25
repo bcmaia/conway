@@ -4,6 +4,8 @@
 		"stdlib.h": "c",
 		"stdio.h": "c",
 		"utils.h": "c",
-		"string_view": "c"
+		"string_view": "c",
+		"random": "c",
+		"termios.h": "c"
 	}
 }

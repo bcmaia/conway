@@ -9,7 +9,7 @@ int board_init (board_t* b, uint32_t width, uint32_t height) {
     b->aux = (char*)malloc(b->length * sizeof(char));
 
 	for (uint64_t i = 0; i < b->length; i++) {
-		char temp = (char)(!(rand() % 20));
+		char temp = (char)(!(rand() % 3));
 
 		b->matrix[i] = temp;
 		b->aux[i] = temp;
@@ -47,16 +47,36 @@ void board_tick (board_t* b) {
 
 	char* temp = b->matrix;
 	b->matrix = b->aux;
-	b->aux = b->matrix;
+	b->aux = temp;
 }
 
-void board_print(board_t* b) {
+void board_print(
+	const board_t* b, 
+	const uint32_t cam_x,
+	const uint32_t cam_y,
+	const uint16_t term_width, 
+	const uint16_t term_height
+) {
 	system("clear");
 	size_t length = b->height * b->width;
 
-	for (size_t i = 0; i < length; i++) {
-		if (0 == (i % b->width)) printf("\n");
-		printf("%c", b->matrix[i] ? 'O' : ' ');
+	uint16_t w = (uint16_t) MIN ((uint64_t)term_width, b->width);
+	uint16_t h = (uint16_t) MIN ((uint64_t)term_height, b->height);
+
+	for (uint16_t i = 0; i < h; i++) printat(1, i, 'X');
+	for (uint16_t i = 0; i < w; i++) printat(i, 1, 'X');
+
+	uint16_t temp = w - 1;
+	for (uint16_t i = 0; i < h; i++) printat(temp, i, 'X');
+
+	temp = term_height - 1;
+	for (uint16_t i = 0; i < w; i++) printat(i, temp, 'X');
+
+	for (uint16_t y = 2; y < h - 2; y++) {
+		for  (int16_t x = 2; x < w - 2; x++) {
+			uint64_t i = (y - 2 + cam_y) * b->width + x - 2 + cam_x;
+			char c = b->matrix[i] ? 'O' : ' ';
+			printat(x, y, c);
+		}
 	}
-	printf("\n");
 }

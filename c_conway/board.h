@@ -18,6 +18,12 @@ int board_init (board_t* b, uint32_t width, uint32_t height);
 void board_del (board_t* b);
 
 void board_tick (board_t* b);
-void board_print(board_t* b);
+void board_print(
+	const board_t* b, 
+	const uint32_t cam_x,
+	const uint32_t cam_y,
+	const uint16_t term_width, 
+	const uint16_t term_height
+);
 
 #endif 
